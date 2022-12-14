@@ -2,6 +2,7 @@ import pickle
 import numpy as np
 from collections import Counter
 
+
 def load_pickle(path):
     """Load json file
 
@@ -15,6 +16,7 @@ def load_pickle(path):
         pickle_data = pickle.load(fr)
     
     return pickle_data
+
 
 def find_closed_key(hertz):
     """음원이 계이름과 정확하게 일치하는 hertz를 출력하지 않으므로 근사하는 계이름을 출력하는 도구
@@ -33,7 +35,6 @@ def find_closed_key(hertz):
     closed_index = np.argmin(abs(herts_array - hertz)) # 확인 대상과 가장 가까운 계이름 hertz 찾기
     
     return herts_array[closed_index] # 출력
-
 
 
 def freq_check(array):
