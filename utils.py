@@ -1,5 +1,6 @@
 import pickle
 import numpy as np
+import soundfile as sf
 from collections import Counter
 
 
@@ -16,6 +17,33 @@ def load_pickle(path):
         pickle_data = pickle.load(fr)
     
     return pickle_data
+
+
+def read_audio(audio_file, duration, mono=True):
+    """read audio signal data and sample rate
+
+    Args:
+        audio_file (Audio_File): audio file path(mp3, wav)
+        duration (int): input audio length(seconds)
+
+    Returns:
+        y (np.ndarray): output sound amplitude
+        sr_native (int): output native sample_rate
+    """
+
+    context = sf.SoundFile(audio_file)
+
+    with context as sf_desc:
+        sr_native = sf_desc.samplerate
+        frame_duration = int(duration * sr_native)
+
+        # Load the target number of frames, and transpose to match librosa form
+        y = sf_desc.read(frames=frame_duration, always_2d=False).T
+
+        if mono == True: # 모노 음원이 들어왔을 경우에 대한 예외처리 필요
+            y = np.mean(y, axis=0) # to mono
+
+    return y, sr_native
 
 
 def find_closed_key(hertz):
