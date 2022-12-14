@@ -1,10 +1,8 @@
 import librosa
 import numpy as np
-import pickle
 import statsmodels.api as sm
 from scipy.signal import find_peaks
 from utils import *
-
 
 def run_model(audio_file):
 
