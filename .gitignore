@@ -169,6 +169,7 @@ poetry.toml
 
 # etc
 .gitmessage.txt
+test.ipynb
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python
