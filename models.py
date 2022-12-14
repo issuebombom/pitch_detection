@@ -7,11 +7,14 @@ from utils import *
 def run_model(audio_file):
 
     hertz2keys = load_pickle("hertz2keys.pkl")
+    duration = 20 # 음원 길이 설정(초)
 
-    # 음원 길이 설정(초)
-    duration = 20
-    data, sample_rate = librosa.load(audio_file, sr=44100, mono=True, duration=duration)
+    # # librosa로 streamlit 업로드 데이터 로드
+    # sr = 44100
+    # data, sample_rate = librosa.load(audio_file, sr=sr, mono=True, duration=duration)
 
+    # soundfile로 streamlit 업로드 데이터 로드
+    data, sample_rate = read_audio(audio_file, duration=duration, mono=True)
 
     # 0.01초 단위로 데이터 슬라이싱
     sec = 0.01
