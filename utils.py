@@ -18,6 +18,13 @@ def load_pickle(path):
     
     return pickle_data
 
+def get_audio_info(audio_file):
+    samplerate = sf.SoundFile(audio_file).samplerate # extract samplerate
+    frames = sf.SoundFile(audio_file).frames # extract audio frames
+    max_time_duration = int(frames // samplerate) # switch audio frames to second length
+
+    return samplerate, frames, max_time_duration
+
 
 def read_audio(audio_file, samplerate, time_duration, mono=True):
     """read audio signal data and sample rate
