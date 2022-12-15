@@ -1,25 +1,20 @@
-import librosa
 import numpy as np
 import statsmodels.api as sm
 from scipy.signal import find_peaks
 from utils import *
 
-def run_model(audio_file):
+def run_model(audio_file, samplerate, time_duration):
 
     hertz2keys = load_pickle("hertz2keys.pkl")
-    duration = 20 # 음원 길이 설정(초)
-
-    # # librosa로 streamlit 업로드 데이터 로드
-    # sr = 44100
-    # data, sample_rate = librosa.load(audio_file, sr=sr, mono=True, duration=duration)
-
     # soundfile로 streamlit 업로드 데이터 로드
-    data, sample_rate = read_audio(audio_file, duration=duration, mono=True)
+    read_audio_data = read_audio(audio_file, samplerate=samplerate, time_duration=time_duration[1], mono=True)
+    min_frame_duration, max_frame_duration = (time_duration[0] * samplerate), (time_duration[1] * samplerate)
+    data = read_audio_data[min_frame_duration:max_frame_duration+1] # select a range of audio frames
 
     # 0.01초 단위로 데이터 슬라이싱
     sec = 0.01
     trim_sec = int(1 / sec)
-    n_rows = data.shape[0] // sample_rate * trim_sec # 지정한 주기로 슬라이싱
+    n_rows = data.shape[0] // samplerate * trim_sec # 지정한 주기로 슬라이싱
     dataset = data.reshape(n_rows, -1)
 
     detected_hertz = []
@@ -36,7 +31,7 @@ def run_model(audio_file):
             continue
         
         lag = peaks[0] # Choose the first peak as our pitch component lag
-        pitch = int(sample_rate / lag) # Transform lag into frequency
+        pitch = int(samplerate / lag) # Transform lag into frequency
         
         detected_hertz.append(find_closed_key(pitch)) # change hertz to closed key hertz
 
@@ -45,7 +40,7 @@ def run_model(audio_file):
     # 0.1초 단위로 가장 빈도수가 높은 키 하나만 남기기
     sec = 0.1
     trim_sec = int(1 / sec)
-    n_rows = duration * trim_sec
+    n_rows = (time_duration[1] - time_duration[0]) * trim_sec
     result = np.array(detected_hertz).reshape(n_rows, -1) # (220, 10)
 
     freq_hertz_result = np.array([freq_check(array) for array in result])
