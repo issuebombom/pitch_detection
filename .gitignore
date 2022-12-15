@@ -171,7 +171,6 @@ poetry.toml
 .gitmessage.txt
 test.ipynb
 test.py
-*.mp3
 *.wav
 
 
