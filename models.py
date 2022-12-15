@@ -24,7 +24,7 @@ def run_model(audio_file, samplerate, time_duration):
             continue
         
         autocorrelation = sm.tsa.acf(sample, nlags=200)
-        peaks = find_peaks(autocorrelation)[0] # Find peaks of the autocorrelation (threshold=0.001)
+        peaks = find_peaks(autocorrelation)[0] # Find peaks of the autocorrelation
         
         if peaks.shape[0] == 0: # peak가 없는 경우 0 입력
             detected_hertz.append(0) # No Peak
@@ -35,7 +35,7 @@ def run_model(audio_file, samplerate, time_duration):
         
         detected_hertz.append(find_closed_key(pitch)) # change hertz to closed key hertz
 
-        
+
     # task 1
     # 0.1초 단위로 가장 빈도수가 높은 키 하나만 남기기
     sec = 0.1
