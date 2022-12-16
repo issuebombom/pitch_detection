@@ -4,6 +4,16 @@ from scipy.signal import find_peaks
 from utils import *
 
 def run_model(audio_file, samplerate, time_duration):
+    """pitch detection model
+
+    Args:
+        audio_file (Bytes): mp3 file
+        samplerate (int): mp3 native sample rate
+        time_duration (tuple): include two integers about start and end time in seconds
+
+    Returns:
+        str: expected keys
+    """
 
     hertz2keys = load_pickle("hertz2keys.pkl")
     # soundfile로 streamlit 업로드 데이터 로드

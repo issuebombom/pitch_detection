@@ -19,6 +19,14 @@ def load_pickle(path):
     return pickle_data
 
 def get_audio_info(audio_file):
+    """get audio infomation about sample rate, frames and total length(seconds)
+
+    Args:
+        audio_file (bytes): mp3 file
+
+    Returns:
+        samplerate(int), frames(int), max_time_duration(int): mp3 infomation
+    """
     samplerate = sf.SoundFile(audio_file).samplerate # extract samplerate
     frames = sf.SoundFile(audio_file).frames # extract audio frames
     max_time_duration = int(frames // samplerate) # switch audio frames to second length

@@ -5,8 +5,11 @@ from models import run_model
 
 sample_folder = "./piano_samples"
 
-st.title('Pitch Detection')
-uploaded_file = st.file_uploader("Import your audio file", type=['wav', 'mp3'])
+st.title('Single Melodic Line Detection')
+st.markdown("""
+##### 단선율 음악에서 계이름(pitch)를 추출하는 테스트 모델입니다.
+""")
+uploaded_file = st.file_uploader("Import your mp3 file", type=['mp3'])
 sample = st.selectbox(
     'Select the piano sample',
     ('piano_sample_01.mp3', 'piano_sample_02.mp3', 'piano_sample_03.mp3', 'piano_sample_04.mp3')
@@ -25,6 +28,6 @@ time_duration = st.slider('Select a range of audio length you want to detect',
                             )
 
 # 버튼을 클릭하면 탐지한 계이름을 시퀀셜하게 출력해 줍니다.
-if st.button('Push button to detect keys'):
+if st.button('Click the button to findout keys'):
     run_model = run_model(uploaded_file, samplerate=samplerate, time_duration=time_duration)
     st.write("  |  ".join(run_model))
